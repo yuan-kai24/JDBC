@@ -1,21 +1,22 @@
 package com.yk.jdbc.conn;
 
-import java.beans.Statement;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class Connection {
+public class QueryClass {
 	
 	private static String url = "jdbc:sqlserver://localhost:1433;DatabaseName=MyTest;";
 	private static String username = "sa";
 	private static String password = "w201024..";
-	private static java.sql.Connection conn = null;
-	
+	private static Connection conn = null;
 	static{
 		try {
-			//加载驱动
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			
-			conn = DriverManager.getConnection(url,username,password);
+			conn = DriverManager.getConnection(url, username, password);
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -27,20 +28,23 @@ public class Connection {
 	}
 	
 	public static void main(String[] args) {
-		
-		String str = "create table stu(id int,name nvarchar(50),age int)";
+		System.out.println(conn);
 		
 		try {
-			java.sql.Statement st = conn.createStatement();
-			int row = st.executeUpdate(str);
-			System.out.println(row);
+			String str = "select * from stu";
+			Statement st = conn.createStatement();
+			ResultSet res = st.executeQuery(str);
+			while(res.next())
+			{
+				System.out.println(res.getInt("id") + res.getString("name") + res.getInt("age"));
+			}
+			
 			st.close();
 			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 }
