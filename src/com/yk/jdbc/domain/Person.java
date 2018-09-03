@@ -24,4 +24,9 @@ public class Person {
 		this.age = age;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "编号" + id + "  姓名："+name + "  年龄：" + age;
+	}
 }
